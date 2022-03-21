@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "fyNNnXQGs3/y+wKfCntVF0YoKw1sv0WQeHtXMn9Qkf0uJMnpbV6g+sVXEivYWUOgFJv7xzm2O8cTG0BDGa5k9Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Hp\\Desktop\\LocalFiles\\CRUD Angular + NET Core + Entity Framework Core+SqlServer\\Back-end\\Back-end.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Hp\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.23\\microsoft.netcore.app.host.win-x64.3.1.23.nupkg.sha512"
+  ],
+  "logs": []
+}
