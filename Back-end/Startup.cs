@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Back_end
 {
@@ -28,6 +29,11 @@ namespace Back_end
         {
             services.AddControllers();
             AddSwagger(services);
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+
+            ); ;
         }
         private void AddSwagger(IServiceCollection services)
         {
@@ -74,6 +80,8 @@ namespace Back_end
             {
                 endpoints.MapControllers();
             });
+
+            
         }
     }
 }
