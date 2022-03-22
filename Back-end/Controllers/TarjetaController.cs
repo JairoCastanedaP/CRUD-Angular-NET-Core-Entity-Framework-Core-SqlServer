@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Back_end.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +14,32 @@ namespace Back_end.Controllers
     [ApiController]
     public class TarjetaController : ControllerBase
     {
-        // GET: api/<TarjetaController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ApplicationDbContext _context;
+
+        public TarjetaController(ApplicationDbContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
         }
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var listTarjetas = await _context.TarjetaCredito.ToListAsync();
+                return Ok(listTarjetas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // GET: api/<TarjetaController>
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET api/<TarjetaController>/5
         [HttpGet("{id}")]
@@ -28,8 +50,18 @@ namespace Back_end.Controllers
 
         // POST api/<TarjetaController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] TarjetaCredito tarjeta)
         {
+            try
+            {
+                _context.Add(tarjeta);
+                await _context.SaveChangesAsync();
+                return Ok(tarjeta);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT api/<TarjetaController>/5

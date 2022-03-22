@@ -10,7 +10,7 @@ namespace Back_end
     public class ApplicationDbContext: DbContext
     {
         //mapeando modelo
-        DbSet<TarjetaCredito> TarjetaCredito { get; set; }
+        public DbSet<TarjetaCredito> TarjetaCredito { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
