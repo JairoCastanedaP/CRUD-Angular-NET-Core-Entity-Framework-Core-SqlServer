@@ -6,3 +6,7 @@ background: -webkit-linear-gradient(to right, #ef8e38, #108dc7);  /* Chrome 10-2
 background: linear-gradient(to right, #ef8e38, #108dc7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }
+.titulo{
+    font-family: 'Inspiration', cursive;
+    text-align: center;
+}
