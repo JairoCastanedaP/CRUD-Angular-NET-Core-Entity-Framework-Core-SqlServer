@@ -10,26 +10,18 @@ import { TarjetaService } from 'src/app/services/tarjeta.service';
 })
 export class TarjetaCreditoComponent implements OnInit {
 
-  listTarjetas: any[]=[
-    {titular:'juaco perez',numeroTarjeta:'6165',fechaExpiracion:'2023-03',cvv:'123'},
-    {titular:'sebastian ferrer',numeroTarjeta:'6854',fechaExpiracion:'2022-01',cvv:'123'},
-    {titular:'sofia castaneda',numeroTarjeta:'3215',fechaExpiracion:'2022-02',cvv:'123'}
-  ];
+  listTarjetas: any = [];
   
   form:FormGroup;
   constructor(private fb: FormBuilder,
     private toastr: ToastrService,
-    private _tarjetaService: TarjetaService
-    ) { 
-
+    private _tarjetaService: TarjetaService){
     this.form=fb.group({
       titular:['',Validators.required],
       numeroTarjeta: ['',[Validators.required,Validators.minLength(16),Validators.maxLength(16)]],
       fechaExpiracion: ['',[Validators.required,Validators.maxLength(5),Validators.minLength(5)]],
       cvv: ['',[Validators.required,Validators.maxLength(3),Validators.minLength(3)]]
-
     })
-
   }
 
   ngOnInit(): void {
@@ -37,10 +29,11 @@ export class TarjetaCreditoComponent implements OnInit {
   }
 obtenerTarjetas(){
   this._tarjetaService.getListarTarjetas().subscribe(data=>{
-    console.log(data);
+    //console.log(data);
+    this.listTarjetas = data.valueOf();
   },error=>{
     console.log(error);
-  });
+  })
 }
 
   agregarTarjeta(){
@@ -58,10 +51,18 @@ obtenerTarjetas(){
     this.toastr.success('La Tarjeta fue registrada con éxito', 'Tarjeta Registrada');
     this.form.reset()
   }
-  eliminarTarjeta(index: number){
-    console.log(index);
-    this.listTarjetas.splice(index,1);
-    this.toastr.error('La tarjeta fue eliminada con éxito','Tarjeta Eliminada');
+  eliminarTarjeta(id: number){
+    //console.log(index);
+    //this.listTarjetas.splice(index,1);
+
+    this._tarjetaService.deleteTarjeta(id).subscribe(data=>{
+      this.toastr.error('La tarjeta fue eliminada con éxito','Tarjeta Eliminada');
+      this.obtenerTarjetas()
+    },error=>{
+      console.log(error);
+    })
+
+   
   }
 
 }
