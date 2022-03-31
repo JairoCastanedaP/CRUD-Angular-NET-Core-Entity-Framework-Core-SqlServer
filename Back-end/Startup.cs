@@ -34,6 +34,12 @@ namespace Back_end
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
 
             ); ;
+            services.AddCors(options => options.AddPolicy("AllowWebApp",
+                builder=> builder.AllowAnyOrigin()
+                                 .AllowAnyHeader()
+                                 .AllowAnyMethod()
+
+                ));
         }
         private void AddSwagger(IServiceCollection services)
         {
@@ -63,6 +69,7 @@ namespace Back_end
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("AllowWebApp");
 
             app.UseHttpsRedirection();
 
