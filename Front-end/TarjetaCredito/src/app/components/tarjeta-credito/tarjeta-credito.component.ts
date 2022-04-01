@@ -1,3 +1,4 @@
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -11,8 +12,10 @@ import { TarjetaService } from 'src/app/services/tarjeta.service';
 export class TarjetaCreditoComponent implements OnInit {
 
   listTarjetas: any = [];
-  
+  accion='Agregar';  
   form:FormGroup;
+  id: number | undefined;
+
   constructor(private fb: FormBuilder,
     private toastr: ToastrService,
     private _tarjetaService: TarjetaService){
@@ -36,8 +39,8 @@ obtenerTarjetas(){
   })
 }
 
-  agregarTarjeta(){
-    console.log(this.form);
+guardarTarjeta(){
+    //console.log(this.form);
     
     const tarjeta: any={
       titular: this.form.get('titular')?.value,
@@ -46,10 +49,34 @@ obtenerTarjetas(){
       cvv: this.form.get('cvv')?.value
     }
     console.log(tarjeta);
+
+    if(this.id== undefined){
+      //se agrega una nueva tarjeta
+      this._tarjetaService.saveTarjeta(tarjeta).subscribe(data=>{
+        this.toastr.success('La Tarjeta fue registrada con éxito', 'Tarjeta Registrada');
+        this.obtenerTarjetas();
+        this.form.reset()
+      },error=>{
+        this.toastr.success('Opss.. Ocurrio un error', 'Error');
+        console.log(error);
+      })
+    }
+    else{
+      this.id=tarjeta.id;
+      this._tarjetaService.updateTarjeta(tarjeta.id,tarjeta).subscribe(data=>{
+      this.form.reset();
+      this.accion='Agregar';
+      this.id=undefined;  
+      this.toastr.info('La tarjeta fue actualizada con éxito','Tarjeta Actualizada');
+      this.obtenerTarjetas();  
+      },error=>{
+        console.log(error);
+      })
+
+    }
     
-    this.listTarjetas.push(tarjeta)
-    this.toastr.success('La Tarjeta fue registrada con éxito', 'Tarjeta Registrada');
-    this.form.reset()
+  
+    //this.listTarjetas.push(tarjeta)
   }
   eliminarTarjeta(id: number){
     //console.log(index);
@@ -60,9 +87,20 @@ obtenerTarjetas(){
       this.obtenerTarjetas()
     },error=>{
       console.log(error);
-    })
+    })   
+  }
 
-   
+  editarTarjeta(tarjeta :any){
+    console.log(tarjeta);
+    this.accion='Editar';
+    this.id=tarjeta.id;
+
+    this.form.patchValue({
+      titular: tarjeta.titular,
+      numeroTarjeta:tarjeta.numeroTarjeta,
+      fechaExpiracion:tarjeta.fechaExpiracion,
+      cvv: tarjeta.cvv
+    })
   }
 
 }

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class TarjetaService {
   private myAppUrl='https://localhost:44361/';
-  private myApiUrl='api/Tarjeta';
+  private myApiUrl='api/tarjeta/';
 
   constructor(private http:HttpClient) { }
 
@@ -15,6 +15,13 @@ export class TarjetaService {
     return  this.http.get(this.myAppUrl +this.myApiUrl);
   }
   deleteTarjeta(id:number): Observable<any>{
-    return this.http.delete(this.myAppUrl+this.myApiUrl+'/'+id)
+    return this.http.delete(this.myAppUrl+this.myApiUrl+id)
+  }
+  saveTarjeta(tarjeta: any): Observable<any> {
+    return this.http.post(this.myAppUrl + this.myApiUrl, tarjeta);
+  }
+
+  updateTarjeta(id: number, tarjeta: any): Observable<any> {
+    return this.http.put(this.myAppUrl + this.myApiUrl + id, tarjeta);
   }
 }
