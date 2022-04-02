@@ -62,8 +62,8 @@ guardarTarjeta(){
       })
     }
     else{
-      this.id=tarjeta.id;
-      this._tarjetaService.updateTarjeta(tarjeta.id,tarjeta).subscribe(data=>{
+      tarjeta.id = this.id;
+      this._tarjetaService.updateTarjeta(this.id,tarjeta).subscribe(data=>{
       this.form.reset();
       this.accion='Agregar';
       this.id=undefined;  
